@@ -1,4 +1,55 @@
 #EXTM3U
-#EXTINF:-1 group-title="RTM1" ch-number="1" tvg-id="1" tvg-chno="1" tvg-logo="https://upload.wikimedia.org/wikipedia/en/thumb/f/fc/8TV_Chinese.png/220px-8TV_Chinese.png" group-title="Malaysia",RTM1
+#EXTINF:-1 ch-number="101" tvg-id="101" tvg-chno="101" tvg-logo="" group-title="Malaysia",RTM1
 #EXTVLCOPT:http-referrer=https://rtm-player.glueapi.io/
 https://d25tgymtnqzu8s.cloudfront.net/smil:tv1/chunklist_b2596000_slENG.m3u8?id=1
+
+#EXTINF:-1 ch-number="102" tvg-id="102" tvg-chno="102" tvg-logo="" group-title="Malaysia",RTM2
+#EXTVLCOPT:http-referrer=https://rtm-player.glueapi.io/
+https://d25tgymtnqzu8s.cloudfront.net/smil:tv2/chunklist_b2596000_slENG.m3u8?id=2
+
+#EXTINF:-1 ch-number="104" tvg-id="104" tvg-chno="104" tvg-logo="" group-title="Malaysia",Sukan RTM
+#EXTVLCOPT:http-referrer=https://rtm-player.glueapi.io/
+https://d25tgymtnqzu8s.cloudfront.net/smil:sukan/chunklist_b2596000_slENG.m3u8?id=4
+
+#EXTINF:-1 ch-number="105" tvg-id="105" tvg-chno="105" tvg-logo="" group-title="Malaysia",Berita RTM
+#EXTVLCOPT:http-referrer=https://rtm-player.glueapi.io/
+https://d25tgymtnqzu8s.cloudfront.net/smil:berita/chunklist_b2596000_slENG.m3u8?id=5
+
+#EXTINF:-1 ch-number="106" tvg-id="106" tvg-chno="106" tvg-logo="" group-title="Malaysia",TV6
+#EXTVLCOPT:http-referrer=https://rtm-player.glueapi.io/
+https://d25tgymtnqzu8s.cloudfront.net/smil:tv6/chunklist_b2596000_slENG.m3u8?id=6
+
+#EXTINF:-1 ch-number="107" tvg-id="107" tvg-chno="107" tvg-logo="" group-title="Malaysia",RTM Dewan Rakyat
+#EXTVLCOPT:http-referrer=https://rtm-player.glueapi.io/
+https://d25tgymtnqzu8s.cloudfront.net/smil:rakyat/chunklist_b2596000_slENG.m3u8?id=7
+
+#EXTINF:-1 ch-number="108" tvg-id="108" tvg-chno="108" tvg-logo="" group-title="Malaysia",RTM Dewan Negara
+#EXTVLCOPT:http-referrer=https://rtm-player.glueapi.io/
+https://d25tgymtnqzu8s.cloudfront.net/smil:negara/chunklist_b2596000_slENG.m3u8?id=8
+
+#EXTINF:-1 ch-number="111" tvg-id="111" tvg-chno="111" tvg-logo="" group-title="Malaysia",Selangor TV
+#EXTVLCOPT:http-referrer=https://www.mana2.my/
+https://live.mana2.my/SelangorTv/tracks-v2a1/mono.m3u8?token=1698498113-c210f881de4a41e4823ab1596138e817-0-5b85e89f22ca439edb2ecf0e8305b8cf&auth_key=1698498113-c210f881de4a41e4823ab1596138e817-0-da6bb31188118ebf72fd6912d63de222
+
+#EXTINF:-1 ch-number="112" tvg-id="112" tvg-chno="112" tvg-logo="" group-title="Malaysia",TV9
+#EXTVLCOPT:http-referrer=https://unifi-live09.secureswiftcontent.com/
+https://unifi-live09.secureswiftcontent.com/UnifiHD/live09-1080FHD-1109029120.m4v
+
+#EXTINF:-1 ch-number="201" tvg-id="201" tvg-chno="201" tvg-logo="" group-title="Brunei",RTB Sukmaindera
+#EXTVLCOPT:http-referrer=https://www.rtbgo.bn/
+https://d1211whpimeups.cloudfront.net/smil:rtb1/chunklist_b4096000_slENG.m3u8
+
+#EXTINF:-1 ch-number="202" tvg-id="202" tvg-chno="202" tvg-logo="" group-title="Brunei",RTB Aneka
+#EXTVLCOPT:http-referrer=https://www.rtbgo.bn/
+https://d1211whpimeups.cloudfront.net/smil:rtb2/chunklist_b4096000_slENG.m3u8
+
+#EXTINF:-1 ch-number="203" tvg-id="203" tvg-chno="203" tvg-logo="" group-title="Brunei",RTBGo Live
+#EXTVLCOPT:http-referrer=https://www.rtbgo.bn/
+https://d1211whpimeups.cloudfront.net/smil:rtbgo/chunklist_b4096000_slENG.m3u8
+
+#EXTINF:-1 tvg-id="301" group-title="News" tvg-logo="",Channel NewsAsia 
+https://d2e1asnsl7br7b.cloudfront.net/7782e205e72f43aeb4a48ec97f66ebbe/index_4.m3u8
+
+#EXTINF:-1 tvg-id="302" group-title="News" tvg-logo="",CGTN
+https://live.cgtn.com/1000/prog_index.m3u8
+
