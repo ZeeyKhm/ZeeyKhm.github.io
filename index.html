@@ -103,74 +103,10 @@
       <section id="auth-dashboard-view" class="auth-view" hidden>
         <h2>Your Dashboard</h2>
         <p id="dashboard-welcome"></p>
-        <p class="analytics-note">Traffic analytics from this site data.</p>
-        <div class="analytics-grid">
-          <article class="analytics-card">
-            <span>Visits (30 days)</span>
-            <strong id="metric-visits-30d">0</strong>
-          </article>
-          <article class="analytics-card">
-            <span>Active Days (30 days)</span>
-            <strong id="metric-active-days">0</strong>
-          </article>
-          <article class="analytics-card">
-            <span>Avg Session</span>
-            <strong id="metric-avg-session">0s</strong>
-          </article>
-          <article class="analytics-card">
-            <span>Top Referrer</span>
-            <strong id="metric-top-referrer">Direct</strong>
-          </article>
-          <article class="analytics-card analytics-card-wide">
-            <span>Top Device</span>
-            <strong id="metric-top-device">Desktop</strong>
-          </article>
-          <article class="analytics-card analytics-card-wide">
-            <span>Last 7 Days</span>
-            <ul id="metric-last-7-days" class="analytics-list"></ul>
-          </article>
-        </div>
         <div class="auth-actions">
+          <a id="dashboard-link" href="#">Open Dashboard</a>
           <button id="logout-btn" type="button">Logout</button>
         </div>
-
-        <hr class="dashboard-divider">
-        <h3>Front-End Manager</h3>
-        <p class="analytics-note">Add, remove, and edit your site content below, then click Save Changes.</p>
-        <form id="content-editor-form" class="content-editor-form" novalidate>
-          <label for="editor-profile-image">Profile Image URL</label>
-          <input id="editor-profile-image" name="profileImage" type="url" placeholder="https://...">
-
-          <label for="editor-user-name">Display Name</label>
-          <input id="editor-user-name" name="userName" type="text" required>
-
-          <label for="editor-description">Description</label>
-          <input id="editor-description" name="description" type="text" required>
-
-          <label for="editor-reach-out-text">Reach Out Button Text</label>
-          <input id="editor-reach-out-text" name="reachOutText" type="text" required>
-
-          <label for="editor-reach-out-url">Reach Out Button URL</label>
-          <input id="editor-reach-out-url" name="reachOutUrl" type="url" required>
-
-          <div class="editor-section">
-            <div class="editor-header-row">
-              <h4>Main Links</h4>
-              <button id="add-link-btn" type="button">+ Add Link</button>
-            </div>
-            <div id="editor-links-list" class="editor-list"></div>
-          </div>
-
-          <div class="editor-section">
-            <div class="editor-header-row">
-              <h4>Social Links</h4>
-              <button id="add-social-btn" type="button">+ Add Social</button>
-            </div>
-            <div id="editor-social-list" class="editor-list"></div>
-          </div>
-
-          <button id="save-content-btn" type="submit">Save Changes</button>
-        </form>
       </section>
 
       <p id="auth-message" class="auth-message" role="status" aria-live="polite"></p>

@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minazaki Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+
+<body>
+  <main class="dashboard-page">
+    <section id="auth-panel" class="auth-panel" hidden>
+      <div class="auth-panel-card">
+        <h1>Login First</h1>
+        <p>Use your account to open the dashboard and manage your homepage.</p>
+
+        <section id="auth-login-view" class="auth-view">
+          <h2>Login</h2>
+          <form id="login-form" class="auth-form" novalidate>
+            <label for="login-email">Email</label>
+            <input id="login-email" name="email" type="email" required>
+            <label for="login-password">Password</label>
+            <input id="login-password" name="password" type="password" required>
+            <button type="submit">Login</button>
+          </form>
+          <div class="auth-links">
+            <button type="button" data-auth-view="register">Register</button>
+            <button type="button" data-auth-view="forgot">Forgot Password</button>
+          </div>
+        </section>
+
+        <section id="auth-register-view" class="auth-view" hidden>
+          <h2>Create Account</h2>
+          <form id="register-form" class="auth-form" novalidate>
+            <label for="register-name">Name</label>
+            <input id="register-name" name="name" type="text" required>
+            <label for="register-email">Email</label>
+            <input id="register-email" name="email" type="email" required>
+            <label for="register-password">Password</label>
+            <input id="register-password" name="password" type="password" minlength="6" required>
+            <button type="submit">Register</button>
+          </form>
+          <div class="auth-links">
+            <button type="button" data-auth-view="login">Back to Login</button>
+          </div>
+        </section>
+
+        <section id="auth-forgot-view" class="auth-view" hidden>
+          <h2>Reset Password</h2>
+          <form id="forgot-form" class="auth-form" novalidate>
+            <label for="forgot-email">Email</label>
+            <input id="forgot-email" name="email" type="email" required>
+            <button type="submit">Send Reset Email</button>
+          </form>
+          <div class="auth-links">
+            <button type="button" data-auth-view="login">Back to Login</button>
+          </div>
+        </section>
+
+        <p id="dashboard-auth-message" class="dashboard-message" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <div id="dashboard-shell" class="dashboard-shell" hidden>
+    <header class="dashboard-header">
+      <div>
+        <h1>Dashboard</h1>
+        <p id="dashboard-welcome">Checking session...</p>
+      </div>
+      <div class="dashboard-header-actions">
+        <a href="index.html">Back To Site</a>
+        <button id="logout-btn" type="button">Logout</button>
+      </div>
+    </header>
+
+    <section class="panel">
+      <h2>Analytics</h2>
+      <div class="analytics-grid">
+        <article class="analytics-card">
+          <span>Visits (30 days)</span>
+          <strong id="metric-visits-30d">0</strong>
+        </article>
+        <article class="analytics-card">
+          <span>Active Days (30 days)</span>
+          <strong id="metric-active-days">0</strong>
+        </article>
+        <article class="analytics-card">
+          <span>Avg Session</span>
+          <strong id="metric-avg-session">0s</strong>
+        </article>
+        <article class="analytics-card">
+          <span>Top Referrer</span>
+          <strong id="metric-top-referrer">Direct</strong>
+        </article>
+        <article class="analytics-card analytics-card-wide">
+          <span>Top Device</span>
+          <strong id="metric-top-device">Desktop</strong>
+        </article>
+        <article class="analytics-card analytics-card-wide">
+          <span>Last 7 Days</span>
+          <ul id="metric-last-7-days" class="analytics-list"></ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Front-End Manager</h2>
+      <p>Update homepage content and save.</p>
+
+      <form id="content-editor-form" class="content-editor-form" novalidate>
+        <label for="editor-profile-image">Profile Image</label>
+        <input id="editor-profile-image" name="profileImageFile" type="file" accept="image/*">
+        <img id="editor-profile-image-preview" class="editor-profile-preview" src="asset/images/pp.jpg" alt="Profile image preview">
+        <p class="editor-helper-text">Pick an image file (max 2MB). It will be optimized and saved in Firestore.</p>
+
+        <label for="editor-user-name">Display Name</label>
+        <input id="editor-user-name" name="userName" type="text" required>
+
+        <label for="editor-description">Description</label>
+        <input id="editor-description" name="description" type="text" required>
+
+        <label for="editor-reach-out-text">Reach Out Button Text</label>
+        <input id="editor-reach-out-text" name="reachOutText" type="text" required>
+
+        <label for="editor-reach-out-url">Reach Out Button URL</label>
+        <input id="editor-reach-out-url" name="reachOutUrl" type="url" required>
+
+        <div class="editor-section">
+          <div class="editor-header-row">
+            <h3>Main Links</h3>
+            <button id="add-link-btn" type="button">+ Add Link</button>
+          </div>
+          <div id="editor-links-list" class="editor-list"></div>
+        </div>
+
+        <div class="editor-section">
+          <div class="editor-header-row">
+            <h3>Social Links</h3>
+            <button id="add-social-btn" type="button">+ Add Social</button>
+          </div>
+          <div id="editor-social-list" class="editor-list"></div>
+        </div>
+
+        <button id="save-content-btn" type="submit">Save Changes</button>
+      </form>
+      <p id="dashboard-message" class="dashboard-message"></p>
+
+    </section>
+    </div>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+
+</html>

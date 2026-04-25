@@ -22,6 +22,7 @@ const authModal = document.getElementById("auth-modal");
 const authClose = document.getElementById("auth-close");
 const authMessage = document.getElementById("auth-message");
 const dashboardWelcome = document.getElementById("dashboard-welcome");
+const dashboardLink = document.getElementById("dashboard-link");
 const metricVisits30d = document.getElementById("metric-visits-30d");
 const metricActiveDays = document.getElementById("metric-active-days");
 const metricAvgSession = document.getElementById("metric-avg-session");
@@ -59,6 +60,7 @@ let currentUser = null;
 let sessionStartedAt = Date.now();
 let sessionFinalized = false;
 let currentSiteContent = null;
+let contentUnsubscribe = null;
 
 const editorState = {
 	links: [],
@@ -679,6 +681,31 @@ async function loadSiteContentFromFirestore() {
 	}
 }
 
+function subscribeToSiteContent() {
+	if (!db) {
+		return;
+	}
+
+	if (contentUnsubscribe) {
+		contentUnsubscribe();
+		contentUnsubscribe = null;
+	}
+
+	contentUnsubscribe = db
+		.collection(CONTENT_COLLECTION)
+		.doc(CONTENT_DOC_ID)
+		.onSnapshot(
+			(doc) => {
+				if (doc.exists) {
+					setContentState(doc.data());
+				}
+			},
+			() => {
+				// Keep default DOM content if real-time sync is unavailable.
+			}
+		);
+}
+
 async function saveSiteContentToFirestore(content) {
 	if (!db || !currentUser) {
 		throw new Error("Not authenticated");
@@ -704,18 +731,21 @@ function initFirebase() {
 	}
 
 	auth = firebase.auth();
-	db = firebase.firestore();
+
+	if (typeof firebase.firestore === "function") {
+		db = firebase.firestore();
+	}
 
 	auth.onAuthStateChanged((user) => {
 		currentUser = user;
-		if (user) {
+		if (user && authModal && authModal.classList.contains("open")) {
+			switchView("dashboard");
 			renderDashboard(user);
-			if (authModal.classList.contains("open")) {
-				switchView("dashboard");
-			}
+			showMessage("Logged in. Press Open Dashboard to continue.");
 		}
 	});
 
+	subscribeToSiteContent();
 	loadSiteContentFromFirestore();
 	trackRemoteVisitStart();
 }
@@ -736,6 +766,14 @@ function openAuthModal() {
 	authModal.setAttribute("aria-hidden", "false");
 	showMessage("");
 
+	const activeUser = auth?.currentUser || currentUser;
+	if (activeUser?.email) {
+		switchView("dashboard");
+		renderDashboard(activeUser);
+		showMessage("You are already logged in. Press Open Dashboard to continue.");
+		return;
+	}
+
 	const runtimeIssue = getRuntimeIssue();
 	if (runtimeIssue) {
 		switchView("login");
@@ -750,11 +788,13 @@ function openAuthModal() {
 	}
 
 	if (currentUser?.email) {
-		renderDashboard(currentUser);
 		switchView("dashboard");
-	} else {
-		switchView("login");
+		renderDashboard(currentUser);
+		showMessage("You are already logged in. Press Open Dashboard to continue.");
+		return;
 	}
+
+	switchView("login");
 }
 
 function closeAuthModal() {
@@ -764,6 +804,9 @@ function closeAuthModal() {
 
 function renderDashboard(user) {
 	dashboardWelcome.textContent = `Welcome, ${user.displayName || user.email}.`;
+	if (dashboardLink) {
+		dashboardLink.href = "dashboard.html";
+	}
 	populateEditorForm(currentSiteContent || getDefaultSiteContent());
 	renderTrafficMetrics();
 }
@@ -788,7 +831,9 @@ function mapAuthError(errorCode) {
 	return messages[errorCode] || "Something went wrong. Please try again.";
 }
 
-dashboardTrigger?.addEventListener("click", openAuthModal);
+if (dashboardTrigger && authModal) {
+	dashboardTrigger.addEventListener("click", openAuthModal);
+}
 authClose?.addEventListener("click", closeAuthModal);
 
 authModal?.addEventListener("click", (event) => {
@@ -823,11 +868,10 @@ loginForm?.addEventListener("submit", (event) => {
 
 	auth
 		.signInWithEmailAndPassword(email, password)
-		.then(({ user }) => {
-			renderDashboard(user);
-			switchView("dashboard");
+		.then(() => {
 			showMessage("Login successful.");
 			loginForm.reset();
+			window.location.href = "dashboard.html";
 		})
 		.catch((error) => {
 			console.error("Login failed:", error);
@@ -864,9 +908,8 @@ registerForm?.addEventListener("submit", (event) => {
 			if (name) {
 				await user.updateProfile({ displayName: name });
 			}
-			renderDashboard(auth.currentUser || user);
-			switchView("dashboard");
-			showMessage("Registration successful.");
+			switchView("login");
+			showMessage("Registration successful. Please login to open dashboard.");
 			registerForm.reset();
 		})
 		.catch((error) => {
