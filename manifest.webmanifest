@@ -1,0 +1,24 @@
+{
+  "name": "Minazaki",
+  "short_name": "Minazaki",
+  "description": "Personal link page of Muhammad Azizi Keffli.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0b111a",
+  "theme_color": "#0b111a",
+  "icons": [
+    {
+      "src": "asset/images/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "asset/images/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

@@ -6,8 +6,7 @@
 
 html,
 body {
-  height: 100%;
-  overflow: hidden;
+  min-height: 100%;
 }
 
 body {
@@ -15,11 +14,13 @@ body {
   text-align: center;
   font-family: "Space Mono", monospace;
   min-height: 100vh;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 18px 12px;
 }
 
 body::before {
@@ -35,7 +36,7 @@ body::before {
 
 .container {
   margin: 0;
-  width: 92%;
+  width: 100%;
   max-width: 520px;
   padding: 20px 28px;
   position: relative;
@@ -106,13 +107,17 @@ body::before {
 }
 
 .social {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
   margin: 20px 0;
 }
 
 .social a {
   padding: 10px;
   font-size: 30px;
-  margin: 0 5px;
+  margin: 0;
   color: #f3f6ff;
   text-decoration: none;
 }
@@ -166,6 +171,60 @@ body::before {
   background-color: rgba(255, 255, 255, 0.08);
   color: #f4f7ff;
   border-color: rgba(255, 255, 255, 0.35);
+}
+
+@media (max-width: 768px) {
+  body {
+    align-items: flex-start;
+    padding: 14px 10px;
+  }
+
+  .container {
+    max-width: 100%;
+    padding: 18px 16px;
+    border-radius: 16px;
+  }
+
+  .user-name {
+    font-size: 26px;
+    line-height: 1.2;
+  }
+
+  .description {
+    font-size: 15px;
+    margin-bottom: 16px;
+  }
+
+  .link {
+    padding: 13px;
+    margin: 8px 0;
+  }
+
+  .reach-out-btn {
+    width: 100%;
+    padding: 13px 16px;
+  }
+
+  .social a {
+    font-size: 28px;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 420px) {
+  .profile {
+    width: 84px;
+    height: 84px;
+    margin: 14px auto;
+  }
+
+  .user-name {
+    font-size: 22px;
+  }
+
+  .footer-text {
+    font-size: 14px;
+  }
 }
 
 .modal-content #contact-form input[type="submit"] {
