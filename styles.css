@@ -14,13 +14,14 @@ body {
   text-align: center;
   font-family: "Space Mono", monospace;
   min-height: 100vh;
+  min-height: 100dvh;
   overflow-x: hidden;
   overflow-y: auto;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 18px 12px;
+  padding: 18px 12px calc(18px + env(safe-area-inset-bottom));
 }
 
 body::before {
@@ -176,12 +177,13 @@ body::before {
 @media (max-width: 768px) {
   body {
     align-items: flex-start;
-    padding: 14px 10px;
+    min-height: 100dvh;
+    padding: 12px 10px calc(14px + env(safe-area-inset-bottom));
   }
 
   .container {
     max-width: 100%;
-    padding: 18px 16px;
+    padding: 16px 14px;
     border-radius: 16px;
   }
 
@@ -192,38 +194,51 @@ body::before {
 
   .description {
     font-size: 15px;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
+  }
+
+  .links {
+    margin: 14px 0;
   }
 
   .link {
-    padding: 13px;
-    margin: 8px 0;
+    padding: 12px;
+    margin: 7px 0;
   }
 
   .reach-out-btn {
     width: 100%;
-    padding: 13px 16px;
+    padding: 12px 14px;
+    margin: 12px 0;
+  }
+
+  .social {
+    margin: 14px 0;
   }
 
   .social a {
-    font-size: 28px;
-    padding: 8px;
+    font-size: 25px;
+    padding: 6px;
+  }
+
+  .footer-text {
+    margin: 10px 0 4px;
   }
 }
 
 @media (max-width: 420px) {
   .profile {
-    width: 84px;
-    height: 84px;
-    margin: 14px auto;
+    width: 76px;
+    height: 76px;
+    margin: 10px auto;
   }
 
   .user-name {
-    font-size: 22px;
+    font-size: 20px;
   }
 
   .footer-text {
-    font-size: 14px;
+    font-size: 13px;
   }
 }
 
