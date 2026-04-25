@@ -1,66 +1,42 @@
-<!DOCTYPE html>
+<html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Landing Page</title>
 
-  <link rel="stylesheet" href="styles.css" />
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OnlyLinx | Hassified</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <meta name="description" content="A linktree-inspired Link-in-Bio Style landing page to store all your sites and social media links.">
+  <link rel="canonical" href="https://codepen.io/hassified/pen/zYapqyP" />
 </head>
 
 <body>
-
-<div class="container">
-
-  <!-- LEFT PANEL -->
-  <div class="left">
-    <div class="profile-img"></div>
-    <div class="name">Your Name</div>
-    <div class="tagline">Cybersecurity & AI | Threat Detection</div>
+  <div class="container">
+    <img class="profile" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhl2WN9C7TbYycJvxvrPop3SiHv7XEtL2rekcK3TzYpObisfSXv59kHIYym_6IBbE3M9qocYqVFFlAcS9bVxPK2cNhJuqob0-dMjy6KKkk7dq_5rFiwrpEQ2OURPk-0axjctQzbM3ZK_jqjh4YJuVgMU65TshR5l1nnnlSz0yRqY7L63avobttXhTtZ/s800/OnlyLinx.png" alt="Profile Image">
+    <h1 class="user-name">OnlyLinx</h1>
+    <p class="description">A way to share your social links!</p>
+    <div class="links">
+      <a class="link shake" href="#">Web Site</a>
+      <a class="link" href="#">Etsy Shop</a>
+      <a class="link" href="#">Discord</a>
+      <a class="link" href="#">DeviantART</a>
+      <a class="link" href="https://dsgnz.github.io/">Search In Style</a>
+    </div>
+    <p class="footer-text">Feel free to reach out!</p>
+    <form id="contact-form">
+      <input type="text" name="name" placeholder="Name Please!" required>
+      <input type="email" name="_replyto" placeholder="Email Address" required>
+      <textarea rows="3" name="message" placeholder="Comments or Request" required></textarea>
+      <input type="submit" value="Submit">
+    </form>
+    <div class="social">
+      <a href="#" class="fa fa-facebook"></a>
+      <a href="#" class="fa fa-twitter"></a>
+      <a href="#" class="fa fa-instagram"></a>
+      <a href="#" class="fa fa-pinterest"></a>
+    </div>
+    <p class="footer-text">OnlyLinx Created by <a href='https://codepen.io/hassified' target="_blank">Hassified</a></p>
   </div>
-
-  <!-- RIGHT PANEL -->
-  <div class="right">
-
-    <!-- WEBSITE STACK -->
-    <div class="link-stack">
-
-      <div class="primary" onclick="window.open('https://your-personal-site.com', '_blank')">
-        <h2>🌐 Personal Website</h2>
-        <p>Research profile & overview</p>
-      </div>
-
-    </div>
-
-    <div class="link-stack">
-
-      <div class="secondary" onclick="window.open('https://your-portfolio.com', '_blank')">
-        <h3>🚀 Portfolio Website</h3>
-        <p>Projects & technical case studies</p>
-      </div>
-
-    </div>
-
-    <!-- GRID LINKS -->
-    <div class="grid">
-
-      <div class="card">🐙 GitHub</div>
-      <div class="card">📚 Publications</div>
-      <div class="card">📄 Certificates</div>
-      <div class="card">📑 CV</div>
-      <div class="card">💼 LinkedIn</div>
-      <div class="card">✉️ Email</div>
-
-    </div>
-
-    <!-- FOOTER -->
-    <div class="footer">
-      © 2026 Your Name
-    </div>
-
-  </div>
-
-</div>
-
 </body>
+
 </html>
