@@ -24,14 +24,14 @@
   </video> -->
 
   <div class="container">
-    <img class="profile" src="asset/images/pp.jpg" alt="Profile Image">
-    <h1 class="user-name">Muhammad Azizi Keffli</h1>
-    <p class="description">A way to share your social links!</p>
-    <div class="links">
+    <img id="profile-image" class="profile" src="asset/images/pp.jpg" alt="Profile Image">
+    <h1 id="user-name" class="user-name">Muhammad Azizi Keffli</h1>
+    <p id="description" class="description">A way to share your social links!</p>
+    <div id="links-container" class="links">
       <a class="link shake" href="https://feline-oyster-22f.notion.site/Zeey-Khm-Workfolio-46811d52f44f4199ab156b7bc7182a7e?source=copy_link">Website</a>
       <a class="link" href="#">Publication</a></div>
-    <a class="reach-out-btn" href="https://mail.google.com/mail/?view=cm&fs=1&to=Azizi702@hotmail.com" target="_blank" rel="noopener noreferrer">Feel free to reach out!</a>
-    <div class="social">
+    <a id="reach-out-btn" class="reach-out-btn" href="https://mail.google.com/mail/?view=cm&fs=1&to=Azizi702@hotmail.com" target="_blank" rel="noopener noreferrer">Feel free to reach out!</a>
+    <div id="social-links" class="social">
       <a href="https://wa.me/6738125702" class="fa-brands fa-whatsapp"></a>
       <a href="https://www.facebook.com/ZeeyKhm/" class="fa-brands fa-facebook"></a>
       <a href="https://www.instagram.com/zeeykhm/" class="fa-brands fa-instagram"></a>
@@ -46,6 +46,140 @@
     <p class="footer-text">© 2026 <a href='https://zeeykhm.github.io/' target="_blank">Minazaki</a></p>
   </div>
 
+  <button id="dashboard-trigger" class="dashboard-trigger" type="button" aria-label="Open dashboard access">
+    &#9432;
+  </button>
+
+  <div id="auth-modal" class="auth-modal" aria-hidden="true">
+    <div class="auth-modal-card" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
+      <button id="auth-close" class="auth-close" type="button" aria-label="Close dialog">&times;</button>
+
+      <section id="auth-login-view" class="auth-view">
+        <h2 id="auth-modal-title">Login First</h2>
+        <p>Log in before opening your dashboard.</p>
+        <form id="login-form" class="auth-form" novalidate>
+          <label for="login-email">Email</label>
+          <input id="login-email" name="email" type="email" required>
+          <label for="login-password">Password</label>
+          <input id="login-password" name="password" type="password" required>
+          <button type="submit">Login</button>
+        </form>
+        <div class="auth-links">
+          <button type="button" data-auth-view="register">Register</button>
+          <button type="button" data-auth-view="forgot">Forgot Password</button>
+        </div>
+      </section>
+
+      <section id="auth-register-view" class="auth-view" hidden>
+        <h2>Create Account</h2>
+        <p>Register an account to unlock dashboard access.</p>
+        <form id="register-form" class="auth-form" novalidate>
+          <label for="register-name">Name</label>
+          <input id="register-name" name="name" type="text" required>
+          <label for="register-email">Email</label>
+          <input id="register-email" name="email" type="email" required>
+          <label for="register-password">Password</label>
+          <input id="register-password" name="password" type="password" minlength="6" required>
+          <button type="submit">Register</button>
+        </form>
+        <div class="auth-links">
+          <button type="button" data-auth-view="login">Back to Login</button>
+        </div>
+      </section>
+
+      <section id="auth-forgot-view" class="auth-view" hidden>
+        <h2>Reset Password</h2>
+        <p>Enter your email to receive a password reset link.</p>
+        <form id="forgot-form" class="auth-form" novalidate>
+          <label for="forgot-email">Email</label>
+          <input id="forgot-email" name="email" type="email" required>
+          <button type="submit">Send Reset Email</button>
+        </form>
+        <div class="auth-links">
+          <button type="button" data-auth-view="login">Back to Login</button>
+        </div>
+      </section>
+
+      <section id="auth-dashboard-view" class="auth-view" hidden>
+        <h2>Your Dashboard</h2>
+        <p id="dashboard-welcome"></p>
+        <p class="analytics-note">Traffic analytics from this site data.</p>
+        <div class="analytics-grid">
+          <article class="analytics-card">
+            <span>Visits (30 days)</span>
+            <strong id="metric-visits-30d">0</strong>
+          </article>
+          <article class="analytics-card">
+            <span>Active Days (30 days)</span>
+            <strong id="metric-active-days">0</strong>
+          </article>
+          <article class="analytics-card">
+            <span>Avg Session</span>
+            <strong id="metric-avg-session">0s</strong>
+          </article>
+          <article class="analytics-card">
+            <span>Top Referrer</span>
+            <strong id="metric-top-referrer">Direct</strong>
+          </article>
+          <article class="analytics-card analytics-card-wide">
+            <span>Top Device</span>
+            <strong id="metric-top-device">Desktop</strong>
+          </article>
+          <article class="analytics-card analytics-card-wide">
+            <span>Last 7 Days</span>
+            <ul id="metric-last-7-days" class="analytics-list"></ul>
+          </article>
+        </div>
+        <div class="auth-actions">
+          <button id="logout-btn" type="button">Logout</button>
+        </div>
+
+        <hr class="dashboard-divider">
+        <h3>Front-End Manager</h3>
+        <p class="analytics-note">Add, remove, and edit your site content below, then click Save Changes.</p>
+        <form id="content-editor-form" class="content-editor-form" novalidate>
+          <label for="editor-profile-image">Profile Image URL</label>
+          <input id="editor-profile-image" name="profileImage" type="url" placeholder="https://...">
+
+          <label for="editor-user-name">Display Name</label>
+          <input id="editor-user-name" name="userName" type="text" required>
+
+          <label for="editor-description">Description</label>
+          <input id="editor-description" name="description" type="text" required>
+
+          <label for="editor-reach-out-text">Reach Out Button Text</label>
+          <input id="editor-reach-out-text" name="reachOutText" type="text" required>
+
+          <label for="editor-reach-out-url">Reach Out Button URL</label>
+          <input id="editor-reach-out-url" name="reachOutUrl" type="url" required>
+
+          <div class="editor-section">
+            <div class="editor-header-row">
+              <h4>Main Links</h4>
+              <button id="add-link-btn" type="button">+ Add Link</button>
+            </div>
+            <div id="editor-links-list" class="editor-list"></div>
+          </div>
+
+          <div class="editor-section">
+            <div class="editor-header-row">
+              <h4>Social Links</h4>
+              <button id="add-social-btn" type="button">+ Add Social</button>
+            </div>
+            <div id="editor-social-list" class="editor-list"></div>
+          </div>
+
+          <button id="save-content-btn" type="submit">Save Changes</button>
+        </form>
+      </section>
+
+      <p id="auth-message" class="auth-message" role="status" aria-live="polite"></p>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
   <script src="script.js"></script>
 </body>
 
