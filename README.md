@@ -1,66 +1,49 @@
-<h1 align="center">🌲 Linktree</h1>
-<h3 align="center">Simple site to group all my profiles on social networks in one place.</h3>
+# OnlyLinx
 
-<p align="center">
-  <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/johnggli/linktree?color=04D361&labelColor=000000">
-  
-  <a href="https://www.linkedin.com/in/johnggli/">
-    <img alt="Made by" src="https://img.shields.io/static/v1?label=made%20by&message=John%20Emerson&color=04D361&labelColor=000000">
-  </a>
-  
-  <img alt="Repository size" src="https://img.shields.io/github/repo-size/johnggli/linktree?color=04D361&labelColor=000000">
-  
-  <a href="https://github.com/johnggli/linktree/commits/master">
-    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/johnggli/linktree?color=04D361&labelColor=000000">
-  </a>
-</p>
+Personal link-in-bio landing page for Muhammad Azizi Keffli (Minazaki).
 
-<p align="center">
-  <a href="#-about-the-project">About the project</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#-getting-started">Getting started</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#-how-to-contribute">How to contribute</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#-license">License</a>
-</p>
+## About
 
----
+This is my personal GitHub Pages website built with plain HTML, CSS, and JavaScript.
+It is lightweight and designed as my public link page.
 
-<p align="center">
-  <img alt="screenshot" src="screenshot.png">
-</p>
+Live site: https://zeeykhm.github.io/
 
----
+## Tech Stack
 
-## 💡 About the project
+- HTML
+- CSS
+- JavaScript
+- Font Awesome (CDN)
+- Google Fonts (Space Mono)
 
-This is an open source project that serves as a free alternative to the Linktree website.
-- [Demo](https://johnggli.github.io/linktree)
+## Project Structure
 
-## 🚀 Getting started
+- `index.html` - main page structure
+- `styles.css` - visual styling, layout, background, and colors
+- `script.js` - modal and interactions
+- `asset/images/` - profile image and background image
+- `asset/videos/` - optional video backgrounds
 
-If you installed git you can clone the code to your machine, or download a ZIP of all the files directly.
-[Download the ZIP from this location](https://github.com/johnggli/linktree/archive/master.zip), or run the following [git](https://git-scm.com/downloads) command to clone the files to your machine:
-```bash
-git clone https://github.com/johnggli/linktree
-```
-- Once the files are on your machine, open the _linktree_ folder in [Visual Studio Code](https://code.visualstudio.com/).
-- With the files open in Visual Studio Code, press the **Go Live** button at the bottom of the window to launch the files with [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer).
-- Change the profile image and texts in the `index.html` file.
-- Change the colors and fonts in the `style.css` file.
-- To change the background, go to the `style.css` file on line 17, uncomment the code snippet and change the url to whatever image you want.
+## Customization
 
-## 🤔 How to contribute
+1. Update name, bio, and links in `index.html`.
+2. Update colors, spacing, and component styles in `styles.css`.
+3. Change background image in `styles.css` (`body::before` background-image URL).
+4. Replace profile image in `asset/images/pp.jpg`.
+5. Optional: enable video background by uncommenting the video block in `index.html`.
 
-- Fork this repository;
-- Create a branch with your feature: `git checkout -b my-feature`;
-- Commit your changes: `git commit -m "feat: my new feature"`;
-- Push to your branch: `git push origin my-feature`.
+## Notes
 
-Once your pull request has been merged, you can delete your branch.
+This site is published as a personal web page, not a template project.
+Visitors are expected to use it as a website, not clone it as a starter kit.
 
-## 📝 License
+## License
 
-This project is under the MIT license. See the [LICENSE](LICENSE.md) file for more details.
+This project uses the MIT License. See [LICENSE.md](LICENSE.md) for details.
 
----
+## Author
 
-Made with ❤️ by John Emerson :wave: [Get in touch](https://johnggli.github.io/linktree)
+Muhammad Azizi Keffli (Minazaki)
+
+Website: https://zeeykhm.github.io/

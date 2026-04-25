@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Favicon">
+  <defs>
+    <clipPath id="circleClip">
+      <circle cx="256" cy="256" r="256" />
+    </clipPath>
+  </defs>
+  <circle cx="256" cy="256" r="256" fill="#ffffff" />
+  <image href="logo.png" x="0" y="0" width="512" height="512" preserveAspectRatio="xMidYMid slice" clip-path="url(#circleClip)" />
+</svg>
