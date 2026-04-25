@@ -7,6 +7,7 @@
 html,
 body {
   min-height: 100%;
+  width: 100%;
 }
 
 body {
@@ -27,7 +28,12 @@ body {
 body::before {
   content: "";
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  width: 100dvw;
+  height: 100vh;
+  height: 100dvh;
   background-image: linear-gradient(rgba(4, 10, 20, 0.6), rgba(4, 10, 20, 0.6)), url("asset/images/bg.jpg");
   background-position: center;
   background-repeat: no-repeat;
