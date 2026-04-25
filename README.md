@@ -1,4 +1,4 @@
-# OnlyLinx
+# ミナザキ
 
 Personal link-in-bio landing page for Muhammad Azizi Keffli (Minazaki).
 
