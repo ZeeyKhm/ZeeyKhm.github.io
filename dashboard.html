@@ -7,6 +7,7 @@
   <title>Minazaki Dashboard</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="dashboard.css">
 </head>
 
@@ -65,90 +66,227 @@
     </section>
 
     <div id="dashboard-shell" class="dashboard-shell" hidden>
-    <header class="dashboard-header">
-      <div>
-        <h1>Dashboard</h1>
-        <p id="dashboard-welcome">Checking session...</p>
-      </div>
-      <div class="dashboard-header-actions">
-        <a href="index.html">Back To Site</a>
-        <button id="logout-btn" type="button">Logout</button>
-      </div>
-    </header>
-
-    <section class="panel">
-      <h2>Analytics</h2>
-      <div class="analytics-grid">
-        <article class="analytics-card">
-          <span>Visits (30 days)</span>
-          <strong id="metric-visits-30d">0</strong>
-        </article>
-        <article class="analytics-card">
-          <span>Active Days (30 days)</span>
-          <strong id="metric-active-days">0</strong>
-        </article>
-        <article class="analytics-card">
-          <span>Avg Session</span>
-          <strong id="metric-avg-session">0s</strong>
-        </article>
-        <article class="analytics-card">
-          <span>Top Referrer</span>
-          <strong id="metric-top-referrer">Direct</strong>
-        </article>
-        <article class="analytics-card analytics-card-wide">
-          <span>Top Device</span>
-          <strong id="metric-top-device">Desktop</strong>
-        </article>
-        <article class="analytics-card analytics-card-wide">
-          <span>Last 7 Days</span>
-          <ul id="metric-last-7-days" class="analytics-list"></ul>
-        </article>
-      </div>
-    </section>
-
-    <section class="panel">
-      <h2>Front-End Manager</h2>
-      <p>Update homepage content and save.</p>
-
-      <form id="content-editor-form" class="content-editor-form" novalidate>
-        <label for="editor-profile-image">Profile Image</label>
-        <input id="editor-profile-image" name="profileImageFile" type="file" accept="image/*">
-        <img id="editor-profile-image-preview" class="editor-profile-preview" src="asset/images/pp.jpg" alt="Profile image preview">
-        <p class="editor-helper-text">Pick an image file (max 2MB). It will be optimized and saved in Firestore.</p>
-
-        <label for="editor-user-name">Display Name</label>
-        <input id="editor-user-name" name="userName" type="text" required>
-
-        <label for="editor-description">Description</label>
-        <input id="editor-description" name="description" type="text" required>
-
-        <label for="editor-reach-out-text">Reach Out Button Text</label>
-        <input id="editor-reach-out-text" name="reachOutText" type="text" required>
-
-        <label for="editor-reach-out-url">Reach Out Button URL</label>
-        <input id="editor-reach-out-url" name="reachOutUrl" type="url" required>
-
-        <div class="editor-section">
-          <div class="editor-header-row">
-            <h3>Main Links</h3>
-            <button id="add-link-btn" type="button">+ Add Link</button>
-          </div>
-          <div id="editor-links-list" class="editor-list"></div>
+      <header class="dashboard-header">
+        <div class="dashboard-header-content">
+          <h1>Dashboard Manager</h1>
+          <p id="dashboard-welcome">Checking session...</p>
         </div>
-
-        <div class="editor-section">
-          <div class="editor-header-row">
-            <h3>Social Links</h3>
-            <button id="add-social-btn" type="button">+ Add Social</button>
-          </div>
-          <div id="editor-social-list" class="editor-list"></div>
+        <div class="dashboard-header-actions">
+          <a href="index.html">Back To Site</a>
+          <button id="logout-btn" type="button">Logout</button>
         </div>
+      </header>
 
-        <button id="save-content-btn" type="submit">Save Changes</button>
-      </form>
-      <p id="dashboard-message" class="dashboard-message"></p>
+      <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="dashboard-sidebar">
+          <nav class="sidebar-nav">
+            <button class="nav-item active" data-section="analytics">
+              <i class="fas fa-chart-line"></i>
+              <span>Analytics</span>
+            </button>
+            <button class="nav-item" data-section="frontend-manager">
+              <i class="fas fa-code"></i>
+              <span>Front-end Manager</span>
+            </button>
+            <button class="nav-item" data-section="main-links">
+              <i class="fas fa-link"></i>
+              <span>Main Links</span>
+            </button>
+            <button class="nav-item" data-section="social-links">
+              <i class="fas fa-share-alt"></i>
+              <span>Social Links</span>
+            </button>
+            <button class="nav-item" data-section="dashboard-settings">
+              <i class="fas fa-cog"></i>
+              <span>Dashboard Settings</span>
+            </button>
+          </nav>
+        </aside>
 
-    </section>
+        <!-- Main Content Area -->
+        <main class="dashboard-content">
+          <!-- Analytics Section -->
+          <section id="analytics" class="content-section active">
+            <div class="section-header">
+              <div class="analytics-header-top">
+                <div>
+                  <h2>Analytics</h2>
+                  <p>View your homepage performance metrics</p>
+                </div>
+                <div class="analytics-view-toggle">
+                  <button class="toggle-view-btn active" data-view="graphical">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Graphical</span>
+                  </button>
+                  <button class="toggle-view-btn" data-view="analytical">
+                    <i class="fas fa-table"></i>
+                    <span>Analytical</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <!-- Graphical View -->
+              <div id="analytics-graphical" class="analytics-view active">
+                <div class="analytics-charts-grid">
+                  <div class="chart-container">
+                    <h3>Visits (Last 7 Days)</h3>
+                    <canvas id="visits-chart"></canvas>
+                  </div>
+                  <div class="chart-container">
+                    <h3>Top Referrers</h3>
+                    <canvas id="referrers-chart"></canvas>
+                  </div>
+                  <div class="chart-container">
+                    <h3>Device Distribution</h3>
+                    <canvas id="devices-chart"></canvas>
+                  </div>
+                  <div class="chart-container">
+                    <h3>Session Duration (Avg)</h3>
+                    <canvas id="session-chart"></canvas>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Analytical View -->
+              <div id="analytics-analytical" class="analytics-view">
+                <div class="analytics-grid">
+                  <article class="analytics-card">
+                    <span>Visits (30 days)</span>
+                    <strong id="metric-visits-30d">0</strong>
+                  </article>
+                  <article class="analytics-card">
+                    <span>Active Days (30 days)</span>
+                    <strong id="metric-active-days">0</strong>
+                  </article>
+                  <article class="analytics-card">
+                    <span>Avg Session</span>
+                    <strong id="metric-avg-session">0s</strong>
+                  </article>
+                  <article class="analytics-card">
+                    <span>Top Referrer</span>
+                    <strong id="metric-top-referrer">Direct</strong>
+                  </article>
+                  <article class="analytics-card analytics-card-wide">
+                    <span>Top Device</span>
+                    <strong id="metric-top-device">Desktop</strong>
+                  </article>
+                  <article class="analytics-card analytics-card-wide">
+                    <span>Last 7 Days</span>
+                    <ul id="metric-last-7-days" class="analytics-list"></ul>
+                  </article>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Front-end Manager Section -->
+          <section id="frontend-manager" class="content-section">
+            <div class="section-header">
+              <h2>Front-end Manager</h2>
+              <p>Update homepage content and manage your profile</p>
+            </div>
+            <div class="panel">
+              <form id="content-editor-form" class="content-editor-form" novalidate>
+                <label for="editor-profile-image">Profile Image</label>
+                <input id="editor-profile-image" name="profileImageFile" type="file" accept="image/*">
+                <img id="editor-profile-image-preview" class="editor-profile-preview" src="asset/images/pp.jpg" alt="Profile image preview">
+                <p class="editor-helper-text">Pick an image file (max 2MB). It will be optimized and saved in Firestore.</p>
+
+                <label for="editor-user-name">Display Name</label>
+                <input id="editor-user-name" name="userName" type="text" required>
+
+                <label for="editor-description">Description</label>
+                <input id="editor-description" name="description" type="text" required>
+
+                <label for="editor-reach-out-text">Reach Out Button Text</label>
+                <input id="editor-reach-out-text" name="reachOutText" type="text" required>
+
+                <label for="editor-reach-out-url">Reach Out Button URL</label>
+                <input id="editor-reach-out-url" name="reachOutUrl" type="url" required>
+
+                <button id="save-content-btn" type="submit">Save Changes</button>
+              </form>
+              <p id="dashboard-message" class="dashboard-message"></p>
+            </div>
+          </section>
+
+          <!-- Main Links Section -->
+          <section id="main-links" class="content-section">
+            <div class="section-header">
+              <h2>Main Links</h2>
+              <p>Manage your main links</p>
+            </div>
+            <div class="panel">
+              <div class="editor-links-container">
+                <div class="editor-header-row">
+                  <h3>Your Links</h3>
+                  <button id="add-link-btn" type="button" class="btn-primary">+ Add Link</button>
+                </div>
+                <div id="editor-links-list" class="editor-list"></div>
+                <button id="save-links-btn" type="button" class="btn-save">Save Changes</button>
+                <p id="main-links-message" class="dashboard-message"></p>
+              </div>
+            </div>
+          </section>
+
+          <!-- Social Links Section -->
+          <section id="social-links" class="content-section">
+            <div class="section-header">
+              <h2>Social Links</h2>
+              <p>Manage your social media links</p>
+            </div>
+            <div class="panel">
+              <div class="editor-socials-container">
+                <div class="editor-header-row">
+                  <h3>Social Media</h3>
+                  <button id="add-social-btn" type="button" class="btn-primary">+ Add Social</button>
+                </div>
+                <div id="editor-social-list" class="editor-list editor-list-social"></div>
+                <button id="save-social-btn" type="button" class="btn-save">Save Changes</button>
+                <p id="social-links-message" class="dashboard-message"></p>
+              </div>
+            </div>
+          </section>
+
+          <!-- Dashboard Settings Section -->
+          <section id="dashboard-settings" class="content-section">
+            <div class="section-header">
+              <h2>Dashboard Settings</h2>
+              <p>Configure your dashboard preferences</p>
+            </div>
+            <div class="panel">
+              <div class="settings-group">
+                <label for="theme-toggle" class="settings-label">
+                  <span>Theme Mode</span>
+                  <div class="theme-toggle">
+                    <button id="theme-toggle" type="button" class="toggle-btn light-mode" aria-label="Toggle dark mode">
+                      <i class="fas fa-sun"></i>
+                      <i class="fas fa-moon"></i>
+                    </button>
+                    <span class="theme-label" id="theme-label">Light Mode</span>
+                  </div>
+                </label>
+              </div>
+              <p class="settings-description">Toggle between light and dark modes for comfortable viewing.</p>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!-- Unsaved Changes Modal -->
+    <div id="unsaved-changes-modal" class="unsaved-changes-modal">
+      <div class="unsaved-changes-content">
+        <h3>Unsaved Changes</h3>
+        <p>You have made changes that have not been saved. Would you like to save them before leaving?</p>
+        <div class="unsaved-changes-buttons">
+          <button id="btn-unsaved-discard" type="button" class="btn-unsaved-discard">Discard Changes</button>
+          <button id="btn-unsaved-cancel" type="button" class="btn-unsaved-cancel">Cancel</button>
+          <button id="btn-unsaved-save" type="button" class="btn-unsaved-save">Save Changes</button>
+        </div>
+      </div>
     </div>
   </main>
 
