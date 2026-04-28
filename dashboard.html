@@ -65,6 +65,12 @@
       </div>
     </section>
 
+    <!-- Dashboard Loading Screen -->
+    <div id="dashboard-loading-screen" class="loading-screen" style="display: none;">
+      <div class="loading-spinner"></div>
+      <p>Loading dashboard...</p>
+    </div>
+
     <div id="dashboard-shell" class="dashboard-shell" hidden>
       <header class="dashboard-header">
         <div class="dashboard-header-content">
@@ -203,8 +209,16 @@
                 <label for="editor-reach-out-text">Reach Out Button Text</label>
                 <input id="editor-reach-out-text" name="reachOutText" type="text" required>
 
-                <label for="editor-reach-out-url">Reach Out Button URL</label>
-                <input id="editor-reach-out-url" name="reachOutUrl" type="url" required>
+                <label for="editor-reach-out-email">Reach Out Button Email</label>
+                <div class="reach-out-input-wrapper">
+                  <span class="reach-out-base">https://mail.google.com/mail/?view=cm&fs=1&to=</span>
+                  <input id="editor-reach-out-email" name="reachOutEmail" type="email" placeholder="your@email.com" required>
+                </div>
+
+                <label for="editor-reach-out-enabled" class="reach-out-toggle-label">
+                  <input id="editor-reach-out-enabled" name="reachOutEnabled" type="checkbox">
+                  <span>Enable Reach Out Button</span>
+                </label>
 
                 <button id="save-content-btn" type="submit">Save Changes</button>
               </form>

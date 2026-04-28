@@ -117,6 +117,7 @@ function sanitizeSiteContent(rawContent, fallback) {
 		description: rawContent?.description ? String(rawContent.description) : fallbackValue.description,
 		reachOutText: rawContent?.reachOutText ? String(rawContent.reachOutText) : fallbackValue.reachOutText,
 		reachOutUrl: rawContent?.reachOutUrl ? String(rawContent.reachOutUrl) : fallbackValue.reachOutUrl,
+		reachOutEnabled: rawContent?.reachOutEnabled !== false ? true : false,
 		links: safeLinks.length ? safeLinks : fallbackValue.links,
 		socials: safeSocials.length ? safeSocials : fallbackValue.socials
 	};
@@ -135,6 +136,12 @@ function renderSiteContent(content) {
 	if (reachOutBtnEl) {
 		reachOutBtnEl.textContent = content.reachOutText;
 		reachOutBtnEl.href = content.reachOutUrl;
+		// Hide or show reach-out button based on reachOutEnabled flag
+		if (content.reachOutEnabled === false) {
+			reachOutBtnEl.style.display = "none";
+		} else {
+			reachOutBtnEl.style.display = "";
+		}
 	}
 
 	if (linksContainerEl) {
@@ -156,6 +163,12 @@ function renderSiteContent(content) {
 			anchor.className = social.iconClass;
 			socialLinksEl.appendChild(anchor);
 		});
+	}
+
+	// Hide loading screen after content is rendered
+	const loadingScreen = document.getElementById("loading-screen");
+	if (loadingScreen) {
+		loadingScreen.classList.add("hidden");
 	}
 }
 
@@ -988,6 +1001,14 @@ contentEditorForm?.addEventListener("submit", async (event) => {
 
 setContentState(getDefaultSiteContent());
 trackLocalVisitStart();
+
+// Timeout to hide loading screen if content takes too long
+setTimeout(() => {
+	const loadingScreen = document.getElementById("loading-screen");
+	if (loadingScreen && !loadingScreen.classList.contains("hidden")) {
+		loadingScreen.classList.add("hidden");
+	}
+}, 3000);
 
 window.addEventListener("pagehide", () => {
 	finalizeLocalSession();

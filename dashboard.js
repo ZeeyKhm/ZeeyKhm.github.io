@@ -32,34 +32,38 @@ function switchToSection(item, navItems, contentSections) {
 }
 
 function saveThemeToFirebase(isDarkMode) {
-  if (!currentUser || !db) {
+  if (!db) {
     return;
   }
 
-  db.collection("userPreferences")
-    .doc(currentUser.uid)
+  db.collection("siteContent")
+    .doc("main")
     .set({ theme: isDarkMode ? "dark-mode" : "light-mode" }, { merge: true })
     .catch((error) => console.error("Failed to save theme preference:", error));
 }
 
 function loadThemeFromFirebase() {
-  if (!currentUser || !db) {
+  if (!db) {
     const savedTheme = localStorage.getItem("dashboard-theme") || "light-mode";
     applyTheme(savedTheme);
     return;
   }
 
-  db.collection("userPreferences")
-    .doc(currentUser.uid)
+  db.collection("siteContent")
+    .doc("main")
     .get()
     .then((doc) => {
       const theme = doc.data()?.theme || localStorage.getItem("dashboard-theme") || "light-mode";
       applyTheme(theme);
+      // Show dashboard content after theme is loaded
+      showDashboardContent();
     })
     .catch((error) => {
       console.error("Failed to load theme preference:", error);
       const savedTheme = localStorage.getItem("dashboard-theme") || "light-mode";
       applyTheme(savedTheme);
+      // Show dashboard content even if theme load fails
+      showDashboardContent();
     });
 }
 
@@ -336,16 +340,25 @@ function renderAnalyticsCharts(metrics) {
     });
   }
 
-  // Referrers Chart
+  // Referrers Chart - Use real data from metrics
   const referrersCanvas = document.getElementById("referrers-chart");
   if (referrersCanvas) {
+    const referrerLabels = Object.keys(metrics.referrersMap || {}).slice(0, 5);
+    const referrerData = referrerLabels.map((label) => metrics.referrersMap[label] || 0);
+    
+    // If no referrer data, show default
+    if (referrerLabels.length === 0) {
+      referrerLabels.push("No Data");
+      referrerData.push(0);
+    }
+    
     chartsInstances.referrers = new Chart(referrersCanvas, {
       type: "doughnut",
       data: {
-        labels: ["Direct", "Organic", "Referral", "Social", "Other"],
+        labels: referrerLabels,
         datasets: [
           {
-            data: [45, 25, 15, 10, 5],
+            data: referrerData,
             backgroundColor: [
               "rgba(107, 182, 255, 0.8)",
               "rgba(74, 222, 128, 0.8)",
@@ -368,16 +381,25 @@ function renderAnalyticsCharts(metrics) {
     });
   }
 
-  // Devices Chart
+  // Devices Chart - Use real data from metrics
   const devicesCanvas = document.getElementById("devices-chart");
   if (devicesCanvas) {
+    const deviceLabels = Object.keys(metrics.devicesMap || {}).slice(0, 3);
+    const deviceData = deviceLabels.map((label) => metrics.devicesMap[label] || 0);
+    
+    // If no device data, show default
+    if (deviceLabels.length === 0) {
+      deviceLabels.push("No Data");
+      deviceData.push(0);
+    }
+    
     chartsInstances.devices = new Chart(devicesCanvas, {
       type: "pie",
       data: {
-        labels: ["Desktop", "Mobile", "Tablet"],
+        labels: deviceLabels,
         datasets: [
           {
-            data: [60, 30, 10],
+            data: deviceData,
             backgroundColor: [
               "rgba(107, 182, 255, 0.8)",
               "rgba(74, 222, 128, 0.8)",
@@ -404,11 +426,11 @@ function renderAnalyticsCharts(metrics) {
     chartsInstances.session = new Chart(sessionCanvas, {
       type: "bar",
       data: {
-        labels: ["Day 1", "Day 2", "Day 3", "Day 4", "Day 5", "Day 6", "Day 7"],
+        labels: metrics.last7days.map((day) => day.dayLabel),
         datasets: [
           {
             label: "Avg Session (s)",
-            data: [120, 150, 130, 160, 145, 155, 170],
+            data: metrics.last7days.map(() => metrics.avgSessionSec),
             backgroundColor: "rgba(107, 182, 255, 0.6)",
             borderColor: "rgba(107, 182, 255, 1)",
             borderWidth: 1
@@ -527,6 +549,7 @@ function sanitizeSiteContent(rawContent) {
     description: rawContent?.description ? String(rawContent.description) : defaultContent.description,
     reachOutText: rawContent?.reachOutText ? String(rawContent.reachOutText) : defaultContent.reachOutText,
     reachOutUrl: rawContent?.reachOutUrl ? String(rawContent.reachOutUrl) : defaultContent.reachOutUrl,
+    reachOutEnabled: rawContent?.reachOutEnabled !== false ? true : false,
     links: Array.isArray(rawContent?.links)
       ? rawContent.links
           .filter((link) => link && link.label && link.url)
@@ -875,7 +898,15 @@ function populateEditorForm(content) {
   contentEditorForm.userName.value = content.userName;
   contentEditorForm.description.value = content.description;
   contentEditorForm.reachOutText.value = content.reachOutText;
-  contentEditorForm.reachOutUrl.value = content.reachOutUrl;
+  
+  // Parse reach-out URL to extract email
+  const mailToBase = "https://mail.google.com/mail/?view=cm&fs=1&to=";
+  let email = "";
+  if (content.reachOutUrl && content.reachOutUrl.startsWith(mailToBase)) {
+    email = content.reachOutUrl.replace(mailToBase, "");
+  }
+  contentEditorForm.reachOutEmail.value = email;
+  contentEditorForm.reachOutEnabled.checked = content.reachOutEnabled !== false;
 
   editorState.links = content.links.map((link) => ({ ...link }));
   editorState.socials = content.socials.map((social) => ({ ...social }));
@@ -883,12 +914,17 @@ function populateEditorForm(content) {
 }
 
 function readContentFromEditor() {
+  const mailToBase = "https://mail.google.com/mail/?view=cm&fs=1&to=";
+  const email = contentEditorForm.reachOutEmail.value.trim();
+  const reachOutUrl = email ? mailToBase + email : "";
+  
   return sanitizeSiteContent({
     profileImage: selectedProfileImage,
     userName: contentEditorForm.userName.value.trim(),
     description: contentEditorForm.description.value.trim(),
     reachOutText: contentEditorForm.reachOutText.value.trim(),
-    reachOutUrl: contentEditorForm.reachOutUrl.value.trim(),
+    reachOutUrl: reachOutUrl,
+    reachOutEnabled: contentEditorForm.reachOutEnabled.checked,
     links: editorState.links.map((link) => ({
       label: link.label.trim(),
       url: link.url.trim(),
@@ -954,6 +990,9 @@ function applyMetrics(metrics) {
     li.appendChild(count);
     metricLast7Days.appendChild(li);
   });
+
+  // Render charts with real data
+  renderAnalyticsCharts(metrics);
 }
 
 async function fetchRemoteDashboardMetrics() {
@@ -1005,7 +1044,9 @@ async function fetchRemoteDashboardMetrics() {
     avgSessionSec: sessionCount > 0 ? Math.round(totalSessionDurationSec / sessionCount) : 0,
     topReferrer: pickTopKey(referrers, "Direct"),
     topDevice: pickTopKey(devices, "Desktop"),
-    last7days: last7.map((dayKey) => ({ dayLabel: dayKey.slice(5), visits: dayCountMap[dayKey] || 0 }))
+    last7days: last7.map((dayKey) => ({ dayLabel: dayKey.slice(5), visits: dayCountMap[dayKey] || 0 })),
+    referrersMap: referrers,
+    devicesMap: devices
   };
 }
 
@@ -1026,15 +1067,15 @@ async function loadDashboardData() {
   try {
     const metrics = await fetchRemoteDashboardMetrics();
     applyMetrics(metrics);
-    if (!hasAnyError) {
-      showMessage("Dashboard loaded.");
-    }
     setupRealtimeAnalyticsListener();
   } catch (error) {
     hasAnyError = true;
     console.error("Analytics load failed:", error);
     showMessage(`Analytics load failed: ${mapFirestoreError(error)}`, true);
   }
+
+  // Show dashboard content after data is loaded
+  showDashboardContent();
 }
 
 function setupRealtimeAnalyticsListener() {
@@ -1071,10 +1112,30 @@ function showDashboard() {
     authPanel.hidden = true;
   }
   if (dashboardShell) {
-    dashboardShell.hidden = false;
+    dashboardShell.hidden = true; // Hide initially while theme loads
+  }
+  // Show dashboard loading screen
+  const dashboardLoadingScreen = document.getElementById("dashboard-loading-screen");
+  if (dashboardLoadingScreen) {
+    dashboardLoadingScreen.style.display = "flex";
   }
   loadThemeFromFirebase();
   initializeAnalyticsViewToggle();
+}
+
+function showDashboardContent() {
+  if (dashboardShell) {
+    dashboardShell.hidden = false;
+  }
+  // Hide dashboard loading screen
+  const dashboardLoadingScreen = document.getElementById("dashboard-loading-screen");
+  if (dashboardLoadingScreen) {
+    dashboardLoadingScreen.style.opacity = "0";
+    dashboardLoadingScreen.style.transition = "opacity 0.3s ease-out";
+    setTimeout(() => {
+      dashboardLoadingScreen.style.display = "none";
+    }, 300);
+  }
 }
 
 function showAuth() {
@@ -1236,6 +1297,17 @@ profileImageInput?.addEventListener("change", async () => {
   } catch {
     showMessage("Could not process the selected image. Please try another file.", true);
   }
+});
+
+// Track changes for reach-out email and enabled checkbox
+document.getElementById("editor-reach-out-email")?.addEventListener("input", () => {
+  hasUnsavedChanges = true;
+  updateSaveButtonsState();
+});
+
+document.getElementById("editor-reach-out-enabled")?.addEventListener("change", () => {
+  hasUnsavedChanges = true;
+  updateSaveButtonsState();
 });
 
 addLinkBtn.addEventListener("click", () => {
