@@ -1,0 +1,15 @@
+# Disable directory listing
+Options -Indexes
+
+# Redirect to index.html for root directory
+DirectoryIndex index.html
+
+# Enable mod_rewrite
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  
+  # Redirect directory requests to index.html
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(.*)$ index.html [L]
+</IfModule>

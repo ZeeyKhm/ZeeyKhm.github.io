@@ -868,6 +868,8 @@ function renderEditorList() {
       usernameInput.placeholder = newPlaceholder;
       usernameInput.value = "";
       editorState.socials[index].url = newBaseUrl;
+      hasUnsavedChanges = true;
+      updateSaveButtonsState();
     }, usernameInput);
 
     const actions = document.createElement("div");
