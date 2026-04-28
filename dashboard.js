@@ -195,13 +195,16 @@ const trackChangesFor = (elementIds) => {
 function updateSaveButtonsState() {
   const saveLinksBtn = document.getElementById("save-links-btn");
   const saveSocialBtn = document.getElementById("save-social-btn");
+  const saveContentBtn = document.getElementById("save-content-btn");
   
   if (hasUnsavedChanges) {
     saveLinksBtn?.removeAttribute("disabled");
     saveSocialBtn?.removeAttribute("disabled");
+    saveContentBtn?.removeAttribute("disabled");
   } else {
     saveLinksBtn?.setAttribute("disabled", "disabled");
     saveSocialBtn?.setAttribute("disabled", "disabled");
+    saveContentBtn?.setAttribute("disabled", "disabled");
   }
 }
 
@@ -1310,6 +1313,27 @@ document.getElementById("editor-reach-out-enabled")?.addEventListener("change", 
   updateSaveButtonsState();
 });
 
+// Track changes for main form fields
+document.getElementById("editor-user-name")?.addEventListener("input", () => {
+  hasUnsavedChanges = true;
+  updateSaveButtonsState();
+});
+
+document.getElementById("editor-description")?.addEventListener("input", () => {
+  hasUnsavedChanges = true;
+  updateSaveButtonsState();
+});
+
+document.getElementById("editor-reach-out-text")?.addEventListener("input", () => {
+  hasUnsavedChanges = true;
+  updateSaveButtonsState();
+});
+
+document.getElementById("editor-profile-image")?.addEventListener("change", () => {
+  hasUnsavedChanges = true;
+  updateSaveButtonsState();
+});
+
 addLinkBtn.addEventListener("click", () => {
   editorState.links.push({ label: "New Link", url: "https://", shake: false });
   hasUnsavedChanges = true;
@@ -1329,16 +1353,25 @@ addSocialBtn.addEventListener("click", () => {
 contentEditorForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   if (!currentUser) {
-    showMessage("Please login first.", true);
+    const dashboardMsg = document.getElementById("dashboard-message");
+    if (dashboardMsg) dashboardMsg.textContent = "Please login first.";
+    if (dashboardMsg) dashboardMsg.style.color = "#ffb6b6";
     return;
   }
 
   try {
     await saveContent();
-    showMessage("Saved. Homepage content updated.");
+    const dashboardMsg = document.getElementById("dashboard-message");
+    if (dashboardMsg) dashboardMsg.textContent = "Saved. Content updated.";
+    if (dashboardMsg) dashboardMsg.style.color = "#f7e09b";
+    resetUnsavedChanges();
   } catch (error) {
     console.error(error);
-    showMessage(`Save failed: ${mapFirestoreError(error)}`, true);
+    const dashboardMsg = document.getElementById("dashboard-message");
+    if (dashboardMsg) {
+      dashboardMsg.textContent = `Save failed: ${mapFirestoreError(error)}`;
+      dashboardMsg.style.color = "#ffb6b6";
+    }
   }
 });
 
